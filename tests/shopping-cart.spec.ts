@@ -31,5 +31,7 @@ test('user can add backpack to cart', async ({
   // const itemName = await cartPage.getItemName();
   // expect(itemName).toBe('Sauce Labs Backpack');
 
-  await expect(cartPage.getItemName()).toHaveText('Sauce Labs Backpack');
+  await expect(
+  cartPage.getItemName('Sauce Labs Backpack')
+).toHaveText('Sauce Labs Backpack');
 });

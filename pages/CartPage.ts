@@ -8,17 +8,14 @@ export class CartPage {
   constructor(page: Page) {
     this.page = page;
     this.cartLink = page.locator('.shopping_cart_link');
-    this.cartItem = page.locator('.inventory_item_name');
+    this.cartItem = page.locator('[data-test="inventory-item-name"]');
   }
 
   async openCart(): Promise<void> {
     await this.cartLink.click();
   }
 
-  // async getItemName(): Promise<string | null> {
-  //   return await this.cartItem.textContent();
-
-  getItemName(): Locator {
-    return this.cartItem;
+  getItemName(itemName: string): Locator {
+    return this.cartItem.filter({ hasText: itemName });
   }
 }
