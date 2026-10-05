@@ -62,4 +62,6 @@ test('user can remove backpack from cart', async ({
   await expect(
     cartPage.getItemName('Sauce Labs Backpack')
   ).toHaveCount(0);
+
+  await expect(productsPage.getCartItemCount()).toHaveCount(0);
 });
