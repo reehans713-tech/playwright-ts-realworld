@@ -35,3 +35,31 @@ test('user can add backpack to cart', async ({
   cartPage.getItemName('Sauce Labs Backpack')
 ).toHaveText('Sauce Labs Backpack');
 });
+
+test('user can remove backpack from cart', async ({
+  page,
+  loginPage,
+  productsPage,
+  cartPage
+}) => {
+  await page.goto('/');
+
+  await loginPage.login(
+    standardUser.username,
+    standardUser.password
+  );
+
+  await productsPage.addBackpackToCart();
+
+  await cartPage.openCart();
+
+  await expect(
+    cartPage.getItemName('Sauce Labs Backpack')
+  ).toHaveText('Sauce Labs Backpack');
+
+  await cartPage.removeBackpack();
+
+  await expect(
+    cartPage.getItemName('Sauce Labs Backpack')
+  ).toHaveCount(0);
+});
