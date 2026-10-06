@@ -99,3 +99,28 @@ test('user can proceed to check out', async ({
 
   await expect(page).toHaveURL("https://www.saucedemo.com/checkout-complete.html");
 });
+
+test('user can sort products by price low to high', async ({
+  page,
+  loginPage,
+  productsPage
+}) => {
+  await page.goto('/');
+  await loginPage.login(
+    standardUser.username,
+    standardUser.password,
+  );
+
+  await productsPage.sortProducts('lohi');
+  const prices = await productsPage.getProductPricesAsNumbers();
+
+  expect(prices).toEqual(
+    [...prices].sort((a, b) => a - b)
+  );
+  // const prices = await productsPage.getProductsPrices().allTextContents();
+  // const numericPrices = prices.map(price => parseFloat(price.replace('$', '')));
+  // expect(numericPrices).toEqual([...numericPrices].sort((a, b) => a - b));
+
+  await expect(productsPage.getSelectedSort())
+    .toHaveText('Price (low to high)');
+});
