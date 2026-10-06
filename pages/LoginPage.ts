@@ -6,6 +6,8 @@ export class LoginPage {
     private readonly password: Locator;
     private readonly loginButton: Locator;
     private readonly errorMessage: Locator;
+    private readonly logoutButton: Locator;
+    private readonly menuButton: Locator;
 
     constructor(page: Page) {
         this.page = page;
@@ -13,6 +15,8 @@ export class LoginPage {
         this.password = page.locator('[data-test="password"]');
         this.loginButton = page.locator('[data-test="login-button"]');
         this.errorMessage = page.locator('[data-test="error"]');
+        this.logoutButton = page.locator('[data-test="logout-sidebar-link"]');
+        this.menuButton = page.locator('#react-burger-menu-btn');
 
     }
     async login(username: string, password: string): Promise<void> {
@@ -22,6 +26,14 @@ export class LoginPage {
 
     }
 
+    async openMenu(): Promise<void> {
+        await this.menuButton.click();
+    }
+
+    async logout(): Promise<void> {
+        await this.logoutButton.click();
+    }
+
     // async getErrorMessage(): Promise<string | null> {
     //     return await this.errorMessage.textContent();
 
@@ -29,4 +41,4 @@ export class LoginPage {
         return this.errorMessage;
     }
 }
-    
+

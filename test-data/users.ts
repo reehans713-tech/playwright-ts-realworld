@@ -12,3 +12,9 @@ export const invalidUser: User = {
   username: 'invalid_user',
   password: 'secret_sauce'
 };
+
+export const checkoutUser = {
+  firstName: 'Syed',
+  lastName : 'Tester',
+  postalCode: '524001',
+};

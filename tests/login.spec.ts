@@ -56,3 +56,18 @@ test('user cannot login with invalid username', async ({ page, loginPage }) => {
   //   'Username and password do not match'
   // );
 });
+
+test('user can logout successfully', async ({ page, loginPage }) => {
+  await page.goto('/');
+
+  await loginPage.login(
+    standardUser.username,
+    standardUser.password
+  );
+
+  await loginPage.openMenu();
+
+  await loginPage.logout();
+
+  await expect(page).toHaveURL(/\/$/);
+});
