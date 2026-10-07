@@ -3,6 +3,23 @@ import { CartPage } from '../pages/CartPage';
 import { ProductsPage } from '../pages/ProductsPage';
 import { standardUser, checkoutUser } from '../test-data/users';
 
+const sortingOptions: {
+  value: string;
+  expectedText: string;
+  order: 'asc' | 'desc';
+}[] = [
+    {
+      value: 'lohi',
+      expectedText: 'Price (low to high)',
+      order: 'asc',
+    },
+    {
+      value: 'hilo',
+      expectedText: 'Price (high to low)',
+      order: 'desc',
+    },
+  ];
+
 test('user can add backpack to cart', async ({
   page,
   loginPage,
@@ -100,27 +117,52 @@ test('user can proceed to check out', async ({
   await expect(page).toHaveURL("https://www.saucedemo.com/checkout-complete.html");
 });
 
-test('user can sort products by price low to high', async ({
-  page,
-  loginPage,
-  productsPage
-}) => {
-  await page.goto('/');
-  await loginPage.login(
-    standardUser.username,
-    standardUser.password,
-  );
+// test('user can sort products by price low to high', async ({
+//   page,
+//   loginPage,
+//   productsPage
+// }) => {
+//   await page.goto('/');
+//   await loginPage.login(
+//     standardUser.username,
+//     standardUser.password,
+//   );
 
-  await productsPage.sortProducts('lohi');
-  const prices = await productsPage.getProductPricesAsNumbers();
+//   await productsPage.sortProducts('lohi');
+//   const prices = await productsPage.getProductPricesAsNumbers();
 
-  expect(prices).toEqual(
-    [...prices].sort((a, b) => a - b)
-  );
-  // const prices = await productsPage.getProductsPrices().allTextContents();
-  // const numericPrices = prices.map(price => parseFloat(price.replace('$', '')));
-  // expect(numericPrices).toEqual([...numericPrices].sort((a, b) => a - b));
+//   expect(prices).toEqual(
+//     [...prices].sort((a, b) => a - b)
+//   );
+//   // const prices = await productsPage.getProductsPrices().allTextContents();
+//   // const numericPrices = prices.map(price => parseFloat(price.replace('$', '')));
+//   // expect(numericPrices).toEqual([...numericPrices].sort((a, b) => a - b));
 
-  await expect(productsPage.getSelectedSort())
-    .toHaveText('Price (low to high)');
+//   await expect(productsPage.getSelectedSort())
+//     .toHaveText('Price (low to high)');
+// });
+
+sortingOptions.forEach(({ value, expectedText, order }) => {
+  test(`user can sort products: ${expectedText}`, async ({
+    page,
+    loginPage,
+    productsPage
+  }) => {
+    await page.goto('/');
+
+    await loginPage.login(
+      standardUser.username,
+      standardUser.password
+    );
+
+    await productsPage.sortProducts(value);
+    const prices = await productsPage.getProductPricesAsNumbers();
+    const sortedPrices = [...prices].sort((a, b) =>
+      order === 'asc' ? a - b : b - a
+    );
+    expect(prices).toEqual(sortedPrices);
+
+    await expect(productsPage.getSelectedSort())
+      .toHaveText(expectedText);
+  });
 });
