@@ -3,22 +3,24 @@ import { CartPage } from '../pages/CartPage';
 import { ProductsPage } from '../pages/ProductsPage';
 import { standardUser, checkoutUser } from '../test-data/users';
 
-const sortingOptions: {
+interface SortingOption {
   value: string;
   expectedText: string;
   order: 'asc' | 'desc';
-}[] = [
-    {
-      value: 'lohi',
-      expectedText: 'Price (low to high)',
-      order: 'asc',
-    },
-    {
-      value: 'hilo',
-      expectedText: 'Price (high to low)',
-      order: 'desc',
-    },
-  ];
+}
+
+const sortingOptions: SortingOption[] = [
+  {
+    value: 'lohi',
+    expectedText: 'Price (low to high)',
+    order: 'asc',
+  },
+  {
+    value: 'hilo',
+    expectedText: 'Price (high to low)',
+    order: 'desc',
+  },
+];
 
 test('user can add backpack to cart', async ({
   page,
