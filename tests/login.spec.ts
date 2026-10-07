@@ -1,23 +1,23 @@
 import { test, expect } from '../fixtures/test-fixtures';
-import { standardUser, invalidUser } from '../test-data/users';
+//import { standardUser, invalidUser } from '../test-data/users';
 import { loginMessages } from '../test-data/messages';
 
-test('user can login successfully', async ({ page, loginPage }) => {
+test('user can login successfully', async ({ page, loginPage, user }) => {
   await page.goto('/');
 
   await loginPage.login(
-    standardUser.username,
-    standardUser.password
+    user.username,
+    user.password
   );
 
   await expect(page).toHaveURL(/inventory/);
 });
 
-test('user cannot login with invalid password', async ({ page, loginPage }) => {
+test('user cannot login with invalid password', async ({ page, loginPage,user }) => {
   await page.goto('/');
 
   await loginPage.login(
-    standardUser.username,
+    user.username,
     'wrong_password'
   );
 
@@ -36,12 +36,12 @@ test('user cannot login with invalid password', async ({ page, loginPage }) => {
   // );
 });
 
-test('user cannot login with invalid username', async ({ page, loginPage }) => {
+test('user cannot login with invalid username', async ({ page, loginPage, user}) => {
   await page.goto('/');
 
   await loginPage.login(
-    invalidUser.username,
-    invalidUser.password
+    'invalid_user',
+    user.password
   );
 
   await expect(loginPage.getErrorMessage()).toBeVisible();
@@ -57,12 +57,12 @@ test('user cannot login with invalid username', async ({ page, loginPage }) => {
   // );
 });
 
-test('user can logout successfully', async ({ page, loginPage }) => {
+test('user can logout successfully', async ({ page, loginPage,user }) => {
   await page.goto('/');
 
   await loginPage.login(
-    standardUser.username,
-    standardUser.password
+    user.username,
+    user.password
   );
 
   await loginPage.openMenu();

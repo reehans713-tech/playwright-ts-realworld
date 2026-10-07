@@ -1,7 +1,7 @@
 import { test, expect } from '../fixtures/test-fixtures';
 import { CartPage } from '../pages/CartPage';
 import { ProductsPage } from '../pages/ProductsPage';
-import { standardUser, checkoutUser } from '../test-data/users';
+import { checkoutUser } from '../test-data/users';
 
 interface SortingOption {
   value: string;
@@ -26,13 +26,14 @@ test('user can add backpack to cart', async ({
   page,
   loginPage,
   productsPage,
-  cartPage
+  cartPage,
+  user
 }) => {
   await page.goto('/');
 
   await loginPage.login(
-    standardUser.username,
-    standardUser.password
+    user.username,
+    user.password
   );
 
   await expect(page).toHaveURL(/inventory/);
@@ -61,13 +62,14 @@ test('user can remove backpack from cart', async ({
   page,
   loginPage,
   productsPage,
-  cartPage
+  cartPage,
+  user
 }) => {
   await page.goto('/');
 
   await loginPage.login(
-    standardUser.username,
-    standardUser.password
+    user.username,
+    user.password
   );
 
   await productsPage.addBackpackToCart();
@@ -92,29 +94,30 @@ test('user can proceed to check out', async ({
   loginPage,
   productsPage,
   cartPage,
-  CheckoutPage
+  checkoutPage,
+  user
 
 }) => {
   await page.goto('/');
   await loginPage.login(
-    standardUser.username,
-    standardUser.password,
+    user.username,
+    user.password,
   );
   await productsPage.addBackpackToCart();
   await cartPage.openCart();
-  await CheckoutPage.clickCheckout();
+  await checkoutPage.clickCheckout();
 
 
-  await CheckoutPage.FillCustomerInformation(
+  await checkoutPage.FillCustomerInformation(
     checkoutUser.firstName,
     checkoutUser.lastName,
     checkoutUser.postalCode
   );
 
-  await CheckoutPage.continueCheckout();
+  await checkoutPage.continueCheckout();
 
-  await CheckoutPage.finishCheckOut();
-  await expect(CheckoutPage.getConfirmationMessage()).toHaveText('Thank you for your order!');
+  await checkoutPage.finishCheckOut();
+  await expect(checkoutPage.getConfirmationMessage()).toHaveText('Thank you for your order!');
 
   await expect(page).toHaveURL("https://www.saucedemo.com/checkout-complete.html");
 });
@@ -148,13 +151,14 @@ sortingOptions.forEach(({ value, expectedText, order }) => {
   test(`user can sort products: ${expectedText}`, async ({
     page,
     loginPage,
-    productsPage
+    productsPage,
+    user
   }) => {
     await page.goto('/');
 
     await loginPage.login(
-      standardUser.username,
-      standardUser.password
+      user.username,
+      user.password
     );
 
     await productsPage.sortProducts(value);
