@@ -47,6 +47,10 @@ export class ProductsPage {
         );
     }
 
+    async getPageTitle(): Promise<string> {
+        return await this.page.title();
+    }
+
 
     getSelectedSort(): Locator {
         return this.selectedSort;

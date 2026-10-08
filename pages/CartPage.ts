@@ -11,8 +11,8 @@ export class CartPage {
     this.cartLink = page.locator('.shopping_cart_link');
     this.cartItem = page.locator('[data-test="inventory-item-name"]');
     this.removeBackpackButton = page.locator(
-  '[data-test="remove-sauce-labs-backpack"]'
-);
+      '[data-test="remove-sauce-labs-backpack"]'
+    );
   }
 
   async openCart(): Promise<void> {
@@ -20,8 +20,12 @@ export class CartPage {
   }
 
   async removeBackpack(): Promise<void> {
-  await this.removeBackpackButton.click();
-}
+    await this.removeBackpackButton.click();
+  }
+  async isCartEmpty(): Promise<boolean> {
+    return (await this.cartItem.count()) === 0;
+  }
+
 
   getItemName(itemName: string): Locator {
     return this.cartItem.filter({ hasText: itemName });

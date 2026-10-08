@@ -81,6 +81,7 @@ test('user can remove backpack from cart', async ({
   ).toHaveText('Sauce Labs Backpack');
 
   await cartPage.removeBackpack();
+  expect(await cartPage.isCartEmpty()).toBe(true);
 
   await expect(
     cartPage.getItemName('Sauce Labs Backpack')
