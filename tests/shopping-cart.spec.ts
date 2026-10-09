@@ -24,14 +24,20 @@ const sortingOptions: SortingOption[] = [
   },
 ];
 
+// test('user can add backpack to cart', async ({
+//   page,
+//   loginPage,
+//   productsPage,
+//   cartPage,
+//   user
+// }) => {
+
 test('user can add backpack to cart', async ({
-  page,
-  loginPage,
+  authenticatedPage,
   productsPage,
-  cartPage,
-  user
+  cartPage
 }) => {
-  await loginUser(page, loginPage, user);
+  //await loginUser(page, loginPage, user);
 
   // await page.goto('/');
 
@@ -40,7 +46,7 @@ test('user can add backpack to cart', async ({
   //   user.password
   // );
 
-  await expect(page).toHaveURL(/inventory/);
+  await expect(authenticatedPage).toHaveURL(/inventory/);
 
   await expect(productsPage.getProductTitle()).toBeVisible();
   await productsPage.addBackpackToCart();
@@ -52,7 +58,7 @@ test('user can add backpack to cart', async ({
 
   await cartPage.openCart();
 
-  await expect(page).toHaveURL(/cart/);
+  await expect(authenticatedPage).toHaveURL(/cart/);
 
   // const itemName = await cartPage.getItemName();
   // expect(itemName).toBe('Sauce Labs Backpack');
@@ -98,16 +104,13 @@ test('user can remove backpack from cart', async ({
 });
 
 test('user can proceed to check out', async ({
-  page,
-  loginPage,
+  authenticatedPage,
   productsPage,
   cartPage,
   checkoutPage,
-  user
-
 }) => {
 
-  await loginUser(page, loginPage, user);
+  //await loginUser(page, loginPage, user);
 
   // await page.goto('/');
   // await loginPage.login(
@@ -130,7 +133,7 @@ test('user can proceed to check out', async ({
   await checkoutPage.finishCheckOut();
   await expect(checkoutPage.getConfirmationMessage()).toHaveText('Thank you for your order!');
 
-  await expect(page).toHaveURL("https://www.saucedemo.com/checkout-complete.html");
+  await expect(authenticatedPage).toHaveURL("https://www.saucedemo.com/checkout-complete.html");
 });
 
 // test('user can sort products by price low to high', async ({
@@ -160,12 +163,11 @@ test('user can proceed to check out', async ({
 
 sortingOptions.forEach(({ value, expectedText, order }) => {
   test(`user can sort products: ${expectedText}`, async ({
-    page,
-    loginPage,
+    authenticatedPage,
     productsPage,
-    user
+
   }) => {
-    await loginUser(page, loginPage, user);
+    //await loginUser(page, loginPage, user);
 
     // await page.goto('/');
 
@@ -173,7 +175,7 @@ sortingOptions.forEach(({ value, expectedText, order }) => {
     //   user.username,
     //   user.password
     // );
-
+    await expect(authenticatedPage).toHaveURL(/inventory/);
     await productsPage.sortProducts(value);
     const prices = await productsPage.getProductPricesAsNumbers();
     const sortedPrices = [...prices].sort((a, b) =>
