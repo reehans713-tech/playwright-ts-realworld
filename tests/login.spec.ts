@@ -2,6 +2,7 @@ import { test, expect } from '../fixtures/test-fixtures';
 //import { standardUser, invalidUser } from '../test-data/users';
 import { loginMessages } from '../test-data/messages';
 import { invalidUsers, validUsers } from '../test-data/users';
+import { loginUser } from '../helpers/auth.helper';
 
 invalidUsers.forEach(user => {
   test(`invalid user cannot login: ${user.username}`, async ({
@@ -29,12 +30,15 @@ validUsers.forEach(user => {
     loginPage,
     productsPage
   }) => {
-    await page.goto('/');
 
-    await loginPage.login(
-      user.username,
-      user.password
-    );
+    await loginUser(page, loginPage, user);
+
+    // await page.goto('/');
+
+    // await loginPage.login(
+    //   user.username,
+    //   user.password
+    // );
 
     await expect(page).toHaveURL(/inventory/);
     expect(await productsPage.getPageTitle()).toBe('Swag Labs');
@@ -99,12 +103,14 @@ test('user cannot login with invalid password', async ({ page, loginPage, user }
 // });
 
 test('user can logout successfully', async ({ page, loginPage, user }) => {
-  await page.goto('/');
+  await loginUser(page, loginPage, user);
 
-  await loginPage.login(
-    user.username,
-    user.password
-  );
+  // await page.goto('/');
+
+  // await loginPage.login(
+  //   user.username,
+  //   user.password
+  // );
 
   await loginPage.openMenu();
 

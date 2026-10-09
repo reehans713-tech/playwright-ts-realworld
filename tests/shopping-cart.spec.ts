@@ -2,6 +2,8 @@ import { test, expect } from '../fixtures/test-fixtures';
 import { CartPage } from '../pages/CartPage';
 import { ProductsPage } from '../pages/ProductsPage';
 import { checkoutUser } from '../test-data/users';
+import { loginUser } from '../helpers/auth.helper';
+import { log } from 'node:console';
 
 interface SortingOption {
   value: string;
@@ -29,12 +31,14 @@ test('user can add backpack to cart', async ({
   cartPage,
   user
 }) => {
-  await page.goto('/');
+  await loginUser(page, loginPage, user);
 
-  await loginPage.login(
-    user.username,
-    user.password
-  );
+  // await page.goto('/');
+
+  // await loginPage.login(
+  //   user.username,
+  //   user.password
+  // );
 
   await expect(page).toHaveURL(/inventory/);
 
@@ -65,12 +69,15 @@ test('user can remove backpack from cart', async ({
   cartPage,
   user
 }) => {
-  await page.goto('/');
 
-  await loginPage.login(
-    user.username,
-    user.password
-  );
+  await loginUser(page, loginPage, user);
+
+  // await page.goto('/');
+
+  // await loginPage.login(
+  //   user.username,
+  //   user.password
+  // );
 
   await productsPage.addBackpackToCart();
 
@@ -99,11 +106,14 @@ test('user can proceed to check out', async ({
   user
 
 }) => {
-  await page.goto('/');
-  await loginPage.login(
-    user.username,
-    user.password,
-  );
+
+  await loginUser(page, loginPage, user);
+
+  // await page.goto('/');
+  // await loginPage.login(
+  //   user.username,
+  //   user.password,
+  // );
   await productsPage.addBackpackToCart();
   await cartPage.openCart();
   await checkoutPage.clickCheckout();
@@ -155,12 +165,14 @@ sortingOptions.forEach(({ value, expectedText, order }) => {
     productsPage,
     user
   }) => {
-    await page.goto('/');
+    await loginUser(page, loginPage, user);
 
-    await loginPage.login(
-      user.username,
-      user.password
-    );
+    // await page.goto('/');
+
+    // await loginPage.login(
+    //   user.username,
+    //   user.password
+    // );
 
     await productsPage.sortProducts(value);
     const prices = await productsPage.getProductPricesAsNumbers();
