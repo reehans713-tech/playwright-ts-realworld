@@ -14,7 +14,7 @@ test('GET post returns the expected data', async ({ request }) => {
     const postApi = new PostApi(request);
     const response = await postApi.getPost(1);
 
-    expectJsonResponse(response,200);
+    expectJsonResponse(response, 200);
 
     //expect(response.status()).toBe(200);
 
@@ -23,8 +23,10 @@ test('GET post returns the expected data', async ({ request }) => {
 
     expect(post.userId).toBe(1);
     expect(post.id).toBe(1);
-    expect(post.title).toBeTruthy();
-    expect(post.body).toBeTruthy();
+    expect(post.title).toBe('sunt aut facere repellat provident occaecati excepturi optio reprehenderit');
+    expect(post.body).toContain('quia et suscipit');
+    // expect(post.title).toBeTruthy();
+    // expect(post.body).toBeTruthy();
 });
 
 
@@ -47,7 +49,7 @@ test('POST creates a new post', async ({ request }) => {
     });
 
     //expect(response.status()).toBe(201);
-    expectJsonResponse(response,201);
+    expectJsonResponse(response, 201);
 
     const post = await response.json();
 
@@ -71,7 +73,7 @@ test('PUT updates an existing post', async ({ request }) => {
 
     //expect(response.status()).toBe(200);
 
-    expectJsonResponse(response,200);
+    expectJsonResponse(response, 200);
 
     const post = await response.json();
 
@@ -88,7 +90,7 @@ test('PATCH updates only selected post fields', async ({ request }) => {
     });
 
     //expect(response.status()).toBe(200);
-    expectJsonResponse(response,200);
+    expectJsonResponse(response, 200);
     const post = await response.json();
     expect(post.id).toBe(1);
     expect(post.title).toBe('Patched Playwright Post');
@@ -98,7 +100,7 @@ test('DELETE removes a post', async ({ request }) => {
     const postApi = new PostApi(request);
 
     const response = await postApi.deletePost(1);
-    expectJsonResponse(response,200);
+    expectJsonResponse(response, 200);
     //expect(response.status()).toBe(200);
 });
 
