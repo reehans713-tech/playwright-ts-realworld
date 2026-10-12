@@ -1,4 +1,4 @@
-import { test as base, expect, Page } from '@playwright/test';
+import { test as base, type Page } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
 import { ProductsPage } from '../pages/ProductsPage';
 import { CartPage } from '../pages/CartPage';
@@ -31,7 +31,7 @@ export const test = base.extend<AppFixtures>({
   checkoutPage: async ({ page }, use) => {
     await use(new CheckoutPage(page));
   },
-  user: async ({ }, use) => {
+  user: async ({}, use) => {
     await use(standardUser);
   },
 
@@ -39,7 +39,6 @@ export const test = base.extend<AppFixtures>({
     await loginUser(page, loginPage, user);
     await use(page);
   },
-
 });
 
 export { expect } from '@playwright/test';

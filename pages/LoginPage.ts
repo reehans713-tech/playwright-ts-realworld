@@ -28,13 +28,17 @@ export class LoginPage {
 
     async openMenu(): Promise<void> {
         await this.menuButton.click();
+        await this.logoutButton.waitFor({ state: 'visible' });
     }
+    // async openMenu(): Promise<void> {
+    //     await this.menuButton.click();
+    // }
 
     async logout(): Promise<void> {
         await this.logoutButton.click();
     }
 
-    
+
 
     // async getErrorMessage(): Promise<string | null> {
     //     return await this.errorMessage.textContent();
