@@ -1,6 +1,7 @@
 
 import { test, expect } from '@playwright/test';
 import { Post, PostApi, PostSchema } from '../helpers/post-api.helper';
+import { expectJsonResponse } from '../helpers/api-assertions';
 
 // interface Post {
 //     userId: number;
@@ -13,7 +14,9 @@ test('GET post returns the expected data', async ({ request }) => {
     const postApi = new PostApi(request);
     const response = await postApi.getPost(1);
 
-    expect(response.status()).toBe(200);
+    expectJsonResponse(response,200);
+
+    //expect(response.status()).toBe(200);
 
     // const post: Post = await response.json();
     const post = await postApi.parsePost(response);
@@ -43,7 +46,8 @@ test('POST creates a new post', async ({ request }) => {
         userId: 1,
     });
 
-    expect(response.status()).toBe(201);
+    //expect(response.status()).toBe(201);
+    expectJsonResponse(response,201);
 
     const post = await response.json();
 
@@ -65,7 +69,9 @@ test('PUT updates an existing post', async ({ request }) => {
     });
 
 
-    expect(response.status()).toBe(200);
+    //expect(response.status()).toBe(200);
+
+    expectJsonResponse(response,200);
 
     const post = await response.json();
 
@@ -81,7 +87,8 @@ test('PATCH updates only selected post fields', async ({ request }) => {
         title: 'Patched Playwright Post',
     });
 
-    expect(response.status()).toBe(200);
+    //expect(response.status()).toBe(200);
+    expectJsonResponse(response,200);
     const post = await response.json();
     expect(post.id).toBe(1);
     expect(post.title).toBe('Patched Playwright Post');
@@ -91,7 +98,8 @@ test('DELETE removes a post', async ({ request }) => {
     const postApi = new PostApi(request);
 
     const response = await postApi.deletePost(1);
-    expect(response.status()).toBe(200);
+    expectJsonResponse(response,200);
+    //expect(response.status()).toBe(200);
 });
 
 test('Zod rejects invalid post data', () => {
