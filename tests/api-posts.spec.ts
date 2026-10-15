@@ -30,15 +30,6 @@ test('GET post returns the expected data', async ({ request }) => {
 });
 
 
-test('GET non-existent post returns 404', async ({ request }) => {
-    const response = await request.get(
-        'https://jsonplaceholder.typicode.com/posts/999999'
-    );
-
-    expect(response.status()).toBe(404);
-});
-
-
 test('POST creates a new post', async ({ request }) => {
     const postApi = new PostApi(request);
 
@@ -56,7 +47,18 @@ test('POST creates a new post', async ({ request }) => {
     expect(post.title).toBe('Playwright API Testing');
     expect(post.body).toBe('Learning POST requests with TypeScript');
     expect(post.userId).toBe(1);
-    expect(post.id).toBeTruthy();
+    expect(post.id).toEqual(expect.any(Number));
+});
+
+test('GET non-existent post returns 404', async ({ request }) => {
+    const response = await request.get(
+        'https://jsonplaceholder.typicode.com/posts/999999'
+    );
+
+    expect(response.status()).toBe(404);
+
+    const body = await response.json();
+    expect(body).toEqual({});
 });
 
 
